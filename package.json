@@ -1,9 +1,10 @@
 {
-  "name": "@nestjs/graphql",
+  "name": "@tuxmachine/graphql",
   "version": "6.5.3",
   "description": "Nest - modern, fast, powerful node.js web framework (@graphql)",
   "author": "Kamil Mysliwiec",
   "license": "MIT",
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc -p tsconfig.json",
