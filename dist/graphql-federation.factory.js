@@ -18,10 +18,14 @@ let GraphQLFederationFactory = class GraphQLFederationFactory {
     mergeOptions(options = {}) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             const { buildFederatedSchema } = load_package_util_1.loadPackage('@apollo/federation', 'ApolloFederation');
+            const externalResolvers = Array.isArray(options.resolvers)
+                ? options.resolvers
+                : [options.resolvers];
             const resolvers = this.extendResolvers([
                 this.resolversExplorerService.explore(),
-                this.scalarsExplorerService.explore(),
                 this.delegatesExplorerService.explore(),
+                ...this.scalarsExplorerService.explore(),
+                ...externalResolvers,
             ]);
             const schema = buildFederatedSchema([
                 {

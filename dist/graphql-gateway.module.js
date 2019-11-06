@@ -72,8 +72,7 @@ let GraphQLGatewayModule = GraphQLGatewayModule_1 = class GraphQLGatewayModule {
             const { ApolloGateway } = load_package_util_1.loadPackage('@apollo/gateway', 'ApolloGateway');
             const { options: { server: serverOpts = {}, gateway: gatewayOpts = {} }, buildService, } = this;
             const gateway = new ApolloGateway(Object.assign(Object.assign({}, gatewayOpts), { buildService }));
-            const { schema, executor } = yield gateway.load();
-            this.registerGqlServer(Object.assign(Object.assign({}, serverOpts), { schema, executor }));
+            this.registerGqlServer(Object.assign(Object.assign({}, serverOpts), { gateway, subscriptions: false }));
             if (serverOpts.installSubscriptionHandlers) {
                 throw new Error('No support for subscriptions yet when using Apollo Federation');
             }
