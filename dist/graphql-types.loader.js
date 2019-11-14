@@ -22,9 +22,7 @@ let GraphQLTypesLoader = class GraphQLTypesLoader {
     }
     getTypesFromPaths(paths) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            paths = util.isArray(paths)
-                ? paths.map(path => normalize(path))
-                : normalize(paths);
+            paths = util.isArray(paths) ? paths.map(path => normalize(path)) : normalize(paths);
             const filePaths = yield glob(paths, {
                 ignore: ['node_modules'],
             });

@@ -81,9 +81,8 @@ let GraphQLFederationModule = GraphQLFederationModule_1 = class GraphQLFederatio
             }
             const { printSchema } = load_package_util_1.loadPackage('@apollo/federation', 'ApolloFederation');
             const { typePaths } = this.options;
-            const typeDefs = yield this.graphqlTypesLoader.getTypesFromPaths(typePaths);
-            const mergedTypeDefs = utils_1.extend(typeDefs, this.options.typeDefs);
-            const apolloOptions = yield this.graphqlFederationFactory.mergeOptions(Object.assign(Object.assign({}, this.options), { typeDefs: mergedTypeDefs }));
+            const typeDefs = yield this.graphqlTypesLoader.mergeTypesByPaths(typePaths);
+            const apolloOptions = yield this.graphqlFederationFactory.mergeOptions(Object.assign(Object.assign({}, this.options), { typeDefs }));
             if (this.options.definitions && this.options.definitions.path) {
                 yield this.graphqlFactory.generateDefinitions(printSchema(apolloOptions.schema), this.options);
             }
