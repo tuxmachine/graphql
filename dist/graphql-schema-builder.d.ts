@@ -1,3 +1,4 @@
+import { GraphQLSchema } from 'graphql';
 import { BuildSchemaOptions } from './external/type-graphql.types';
 import { ScalarsExplorerService } from './services';
 export declare class GraphQLSchemaBuilder {
@@ -8,5 +9,11 @@ export declare class GraphQLSchemaBuilder {
     options: BuildSchemaOptions,
     resolvers: Function[],
   ): Promise<any>;
+  buildFederatedSchema(
+    autoSchemaFile: string | boolean,
+    options: BuildSchemaOptions,
+    resolvers: Function[],
+  ): Promise<GraphQLSchema>;
   private loadBuildSchemaFactory;
+  private loadFederationDirectives;
 }

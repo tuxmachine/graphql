@@ -1,5 +1,5 @@
 import { Type } from '@nestjs/common';
-import { GraphQLScalarType } from 'graphql';
+import { GraphQLDirective, GraphQLScalarType } from 'graphql';
 export declare type TypeValue = Type<any> | GraphQLScalarType | Function | object | symbol;
 export declare type ReturnTypeFuncValue = TypeValue | [TypeValue];
 export declare type ReturnTypeFunc = (returns?: void) => ReturnTypeFuncValue;
@@ -29,6 +29,8 @@ export declare type AdvancedOptions = BasicOptions & DepreciationOptions & Schem
 export interface BuildSchemaOptions {
   dateScalarMode?: DateScalarMode;
   scalarsMap?: ScalarsTypeMap[];
+  orphanedTypes?: Function[];
+  directives?: GraphQLDirective[];
 }
 export declare type DateScalarMode = 'isoDate' | 'timestamp';
 export interface ScalarsTypeMap {
