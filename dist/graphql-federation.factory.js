@@ -26,7 +26,7 @@ let GraphQLFederationFactory = class GraphQLFederationFactory {
                 throw new Error('Code-first not supported yet');
                 schema = yield this.generateSchema(options);
             }
-            else if (!lodash_1.isEmpty(options.typeDefs)) {
+            else if (lodash_1.isEmpty(options.typeDefs)) {
                 schema = options.schema;
             }
             else {
