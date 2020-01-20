@@ -17,7 +17,9 @@ exports.addResolverMetadata = addResolverMetadata;
 function createPropertyDecorator(propertyNameOrFunc, typeFuncOrOptions, advancedOptions) {
     return (target, key, descriptor) => {
         let [propertyName, typeFunc, options] = shared_utils_1.isFunction(propertyNameOrFunc)
-            ? [undefined, propertyNameOrFunc, typeFuncOrOptions]
+            ? typeFuncOrOptions && typeFuncOrOptions.name
+                ? [typeFuncOrOptions.name, propertyNameOrFunc, typeFuncOrOptions]
+                : [undefined, propertyNameOrFunc, typeFuncOrOptions]
             : [propertyNameOrFunc, typeFuncOrOptions, advancedOptions];
         common_1.SetMetadata(graphql_constants_1.RESOLVER_NAME_METADATA, propertyName)(target, key, descriptor);
         common_1.SetMetadata(graphql_constants_1.RESOLVER_PROPERTY_METADATA, true)(target, key, descriptor);
@@ -55,7 +57,5 @@ exports.getClassOrUndefined = (typeOrFunc) => {
             : undefined;
 };
 function isConstructor(obj) {
-    return (!!obj.prototype &&
-        !!obj.prototype.constructor &&
-        !!obj.prototype.constructor.name);
+    return !!obj.prototype && !!obj.prototype.constructor && !!obj.prototype.constructor.name;
 }

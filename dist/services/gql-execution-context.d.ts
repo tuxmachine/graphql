@@ -1,12 +1,13 @@
-import { ExecutionContext } from '@nestjs/common';
+import { ContextType, ExecutionContext } from '@nestjs/common';
 import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 import { GraphQLArgumentsHost } from './gql-arguments-host';
-export interface GraphQLExecutionContext extends ExecutionContext, GraphQLArgumentsHost {
+export declare type GqlContextType = 'graphql' | ContextType;
+export declare type GraphQLExecutionContext = GqlExecutionContext;
+export declare class GqlExecutionContext extends ExecutionContextHost
+  implements GraphQLArgumentsHost {
+  static create(context: ExecutionContext): GqlExecutionContext;
   getRoot<T = any>(): T;
-  getInfo<T = any>(): T;
   getArgs<T = any>(): T;
   getContext<T = any>(): T;
-}
-export declare class GqlExecutionContext extends ExecutionContextHost {
-  static create(context: ExecutionContext): GraphQLExecutionContext;
+  getInfo<T = any>(): T;
 }

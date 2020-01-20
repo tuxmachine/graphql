@@ -42,7 +42,8 @@ let ResolversExplorerService = class ResolversExplorerService extends base_explo
         const prototype = Object.getPrototypeOf(instance);
         const predicate = (resolverType, isDelegated, isReferenceResolver, isPropertyResolver) => shared_utils_1.isUndefined(resolverType) ||
             isDelegated ||
-            (!isReferenceResolver && !isPropertyResolver &&
+            (!isReferenceResolver &&
+                !isPropertyResolver &&
                 ![resolvers_enum_1.Resolvers.MUTATION, resolvers_enum_1.Resolvers.QUERY, resolvers_enum_1.Resolvers.SUBSCRIPTION].some(type => type === resolverType));
         const resolvers = this.metadataScanner.scanFromPrototype(instance, prototype, name => extract_metadata_util_1.extractMetadata(instance, prototype, name, predicate));
         const isRequestScoped = !wrapper.isDependencyTreeStatic();
@@ -59,11 +60,7 @@ let ResolversExplorerService = class ResolversExplorerService extends base_explo
     }
     createContextCallback(instance, prototype, wrapper, moduleRef, resolver, isRequestScoped, transform = lodash_1.identity) {
         const paramsFactory = this.gqlParamsFactory;
-        const isPropertyResolver = ![
-            resolvers_enum_1.Resolvers.MUTATION,
-            resolvers_enum_1.Resolvers.QUERY,
-            resolvers_enum_1.Resolvers.SUBSCRIPTION,
-        ].some(type => type === resolver.type);
+        const isPropertyResolver = ![resolvers_enum_1.Resolvers.MUTATION, resolvers_enum_1.Resolvers.QUERY, resolvers_enum_1.Resolvers.SUBSCRIPTION].some(type => type === resolver.type);
         const fieldResolverEnhancers = this.gqlOptions.fieldResolverEnhancers || [];
         const contextOptions = isPropertyResolver
             ? {
@@ -95,7 +92,7 @@ let ResolversExplorerService = class ResolversExplorerService extends base_explo
             });
             return resolverCallback;
         }
-        const resolverCallback = this.externalContextCreator.create(instance, prototype[resolver.methodName], resolver.methodName, graphql_constants_1.PARAM_ARGS_METADATA, paramsFactory, undefined, undefined, contextOptions);
+        const resolverCallback = this.externalContextCreator.create(instance, prototype[resolver.methodName], resolver.methodName, graphql_constants_1.PARAM_ARGS_METADATA, paramsFactory, undefined, undefined, contextOptions, 'graphql');
         return resolverCallback;
     }
     createSubscriptionMetadata(createSubscribeContext, subscriptionOptions, resolverMetadata, instanceRef) {

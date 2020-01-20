@@ -5,7 +5,6 @@ tslib_1.__exportStar(require("./async-iterator.util"), exports);
 tslib_1.__exportStar(require("./extend.util"), exports);
 tslib_1.__exportStar(require("./extract-metadata.util"), exports);
 tslib_1.__exportStar(require("./generate-token.util"), exports);
-tslib_1.__exportStar(require("./merge-arguments-host.util"), exports);
 tslib_1.__exportStar(require("./merge-defaults.util"), exports);
 tslib_1.__exportStar(require("./normalize-route-path.util"), exports);
 tslib_1.__exportStar(require("./remove-temp.util"), exports);

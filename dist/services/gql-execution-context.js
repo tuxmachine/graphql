@@ -1,10 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const execution_context_host_1 = require("@nestjs/core/helpers/execution-context-host");
-const merge_arguments_host_util_1 = require("../utils/merge-arguments-host.util");
 class GqlExecutionContext extends execution_context_host_1.ExecutionContextHost {
     static create(context) {
-        return merge_arguments_host_util_1.mergeArgumentsHost(context);
+        const type = context.getType();
+        const gqlContext = new GqlExecutionContext(context.getArgs(), context.getClass(), context.getHandler());
+        gqlContext.setType(type);
+        return gqlContext;
+    }
+    getRoot() {
+        return this.getArgByIndex(0);
+    }
+    getArgs() {
+        return this.getArgByIndex(1);
+    }
+    getContext() {
+        return this.getArgByIndex(2);
+    }
+    getInfo() {
+        return this.getArgByIndex(3);
     }
 }
 exports.GqlExecutionContext = GqlExecutionContext;
