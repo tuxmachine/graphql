@@ -3,11 +3,9 @@ import { isUndefined } from '@nestjs/common/utils/shared.utils';
 import { REQUEST } from '@nestjs/core';
 import { createContextId } from '@nestjs/core/helpers/context-id-factory';
 import { ExternalContextCreator } from '@nestjs/core/helpers/external-context-creator';
+import { ParamMetadata } from '@nestjs/core/helpers/interfaces/params-metadata.interface';
 import { Injector } from '@nestjs/core/injector/injector';
-import {
-  ContextId,
-  InstanceWrapper,
-} from '@nestjs/core/injector/instance-wrapper';
+import { ContextId, InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
 import { InternalCoreModule } from '@nestjs/core/injector/internal-core-module';
 import { Module } from '@nestjs/core/injector/module';
 import { ModulesContainer } from '@nestjs/core/injector/modules-container';
@@ -27,6 +25,7 @@ import { ResolverMetadata } from '../interfaces/resolver-metadata.interface';
 import { createAsyncIterator } from '../utils/async-iterator.util';
 import { extractMetadata } from '../utils/extract-metadata.util';
 import { BaseExplorerService } from './base-explorer.service';
+import { GqlContextType } from './gql-execution-context';
 
 const gqlContextIdSymbol = Symbol('GQL_CONTEXT_ID');
 
@@ -46,20 +45,14 @@ export class ResolversExplorerService extends BaseExplorerService {
   }
 
   explore() {
-    const modules = this.getModules(
-      this.modulesContainer,
-      this.gqlOptions.include || [],
-    );
+    const modules = this.getModules(this.modulesContainer, this.gqlOptions.include || []);
     const resolvers = this.flatMap(modules, (instance, moduleRef) =>
       this.filterResolvers(instance, moduleRef),
     );
     return this.groupMetadata(resolvers);
   }
 
-  filterResolvers(
-    wrapper: InstanceWrapper,
-    moduleRef: Module,
-  ): ResolverMetadata[] {
+  filterResolvers(wrapper: InstanceWrapper, moduleRef: Module): ResolverMetadata[] {
     const { instance } = wrapper;
     if (!instance) {
       return undefined;
@@ -73,15 +66,14 @@ export class ResolversExplorerService extends BaseExplorerService {
     ) =>
       isUndefined(resolverType) ||
       isDelegated ||
-      (!isReferenceResolver && !isPropertyResolver &&
+      (!isReferenceResolver &&
+        !isPropertyResolver &&
         ![Resolvers.MUTATION, Resolvers.QUERY, Resolvers.SUBSCRIPTION].some(
           type => type === resolverType,
         ));
 
-    const resolvers = this.metadataScanner.scanFromPrototype(
-      instance,
-      prototype,
-      name => extractMetadata(instance, prototype, name, predicate),
+    const resolvers = this.metadataScanner.scanFromPrototype(instance, prototype, name =>
+      extractMetadata(instance, prototype, name, predicate),
     );
 
     const isRequestScoped = !wrapper.isDependencyTreeStatic();
@@ -127,11 +119,9 @@ export class ResolversExplorerService extends BaseExplorerService {
     transform: Function = identity,
   ) {
     const paramsFactory = this.gqlParamsFactory;
-    const isPropertyResolver = ![
-      Resolvers.MUTATION,
-      Resolvers.QUERY,
-      Resolvers.SUBSCRIPTION,
-    ].some(type => type === resolver.type);
+    const isPropertyResolver = ![Resolvers.MUTATION, Resolvers.QUERY, Resolvers.SUBSCRIPTION].some(
+      type => type === resolver.type,
+    );
 
     const fieldResolverEnhancers = this.gqlOptions.fieldResolverEnhancers || [];
     const contextOptions = isPropertyResolver
@@ -144,11 +134,7 @@ export class ResolversExplorerService extends BaseExplorerService {
 
     if (isRequestScoped) {
       const resolverCallback = async (...args: any[]) => {
-        const gqlContext = paramsFactory.exchangeKeyForValue(
-          GqlParamtype.CONTEXT,
-          undefined,
-          args,
-        );
+        const gqlContext = paramsFactory.exchangeKeyForValue(GqlParamtype.CONTEXT, undefined, args);
         let contextId: ContextId;
         if (gqlContext && gqlContext[gqlContextIdSymbol]) {
           contextId = gqlContext[gqlContextIdSymbol];
@@ -183,7 +169,10 @@ export class ResolversExplorerService extends BaseExplorerService {
       };
       return resolverCallback;
     }
-    const resolverCallback = this.externalContextCreator.create(
+    const resolverCallback = this.externalContextCreator.create<
+      Record<number, ParamMetadata>,
+      GqlContextType
+    >(
       instance,
       prototype[resolver.methodName],
       resolver.methodName,
@@ -192,6 +181,7 @@ export class ResolversExplorerService extends BaseExplorerService {
       undefined,
       undefined,
       contextOptions,
+      'graphql',
     );
     return resolverCallback;
   }
@@ -218,11 +208,7 @@ export class ResolversExplorerService extends BaseExplorerService {
             ...args: [TPayload, TVariables, TContext, TInfo]
           ) =>
             createAsyncIterator(createSubscribeContext()(...args), payload =>
-              (subscriptionOptions.filter as Function).call(
-                instanceRef,
-                payload,
-                ...args.slice(1),
-              ),
+              (subscriptionOptions.filter as Function).call(instanceRef, payload, ...args.slice(1)),
             ),
         },
       };
@@ -237,20 +223,14 @@ export class ResolversExplorerService extends BaseExplorerService {
   }
 
   getAllCtors(): Function[] {
-    const modules = this.getModules(
-      this.modulesContainer,
-      this.gqlOptions.include || [],
-    );
+    const modules = this.getModules(this.modulesContainer, this.gqlOptions.include || []);
     const resolvers = this.flatMap(modules, instance => instance.metatype);
     return resolvers;
   }
 
   private registerContextProvider<T = any>(request: T, contextId: ContextId) {
     const coreModuleArray = [...this.modulesContainer.entries()]
-      .filter(
-        ([key, { metatype }]) =>
-          metatype && metatype.name === InternalCoreModule.name,
-      )
+      .filter(([key, { metatype }]) => metatype && metatype.name === InternalCoreModule.name)
       .map(([key, value]) => value);
 
     const coreModuleRef = head(coreModuleArray);

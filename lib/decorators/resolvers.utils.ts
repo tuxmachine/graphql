@@ -1,14 +1,7 @@
 import { SetMetadata, Type } from '@nestjs/common';
-import {
-  isFunction,
-  isObject,
-  isString,
-} from '@nestjs/common/utils/shared.utils';
+import { isFunction, isObject, isString } from '@nestjs/common/utils/shared.utils';
 import { Resolvers } from '../enums/resolvers.enum';
-import {
-  AdvancedOptions,
-  ReturnTypeFunc,
-} from '../external/type-graphql.types';
+import { AdvancedOptions, ReturnTypeFunc } from '../external/type-graphql.types';
 import {
   RESOLVER_DELEGATE_METADATA,
   RESOLVER_NAME_METADATA,
@@ -29,11 +22,7 @@ export function addResolverMetadata(
   key?: string | symbol,
   descriptor?: string,
 ) {
-  SetMetadata(RESOLVER_TYPE_METADATA, resolver || name)(
-    target,
-    key,
-    descriptor,
-  );
+  SetMetadata(RESOLVER_TYPE_METADATA, resolver || name)(target, key, descriptor);
   SetMetadata(RESOLVER_NAME_METADATA, name)(target, key, descriptor);
 }
 
@@ -51,13 +40,11 @@ export function createPropertyDecorator(
   typeFuncOrOptions?: ReturnTypeFunc | AdvancedOptions,
   advancedOptions?: AdvancedOptions,
 ): MethodDecorator {
-  return (
-    target: Function | Object,
-    key?: string | symbol,
-    descriptor?: any,
-  ) => {
+  return (target: Function | Object, key?: string | symbol, descriptor?: any) => {
     let [propertyName, typeFunc, options] = isFunction(propertyNameOrFunc)
-      ? [undefined, propertyNameOrFunc, typeFuncOrOptions]
+      ? typeFuncOrOptions && typeFuncOrOptions.name
+        ? [typeFuncOrOptions.name, propertyNameOrFunc, typeFuncOrOptions]
+        : [undefined, propertyNameOrFunc, typeFuncOrOptions]
       : [propertyNameOrFunc, typeFuncOrOptions, advancedOptions];
 
     SetMetadata(RESOLVER_NAME_METADATA, propertyName)(target, key, descriptor);
@@ -74,9 +61,7 @@ export function createPropertyDecorator(
         ? { name: propertyName as string }
         : undefined;
 
-      lazyMetadataStorage.store(() =>
-        FieldResolver(typeFunc, options)(target, key, descriptor),
-      );
+      lazyMetadataStorage.store(() => FieldResolver(typeFunc, options)(target, key, descriptor));
     }
   };
 }
@@ -86,17 +71,9 @@ export function createDelegateDecorator(
   typeFunc?: ReturnTypeFunc,
   options?: AdvancedOptions,
 ): MethodDecorator {
-  return (
-    target: Function | Object,
-    key?: string | symbol,
-    descriptor?: any,
-  ) => {
+  return (target: Function | Object, key?: string | symbol, descriptor?: any) => {
     SetMetadata(RESOLVER_NAME_METADATA, propertyName)(target, key, descriptor);
-    SetMetadata(RESOLVER_DELEGATE_METADATA, propertyName)(
-      target,
-      key,
-      descriptor,
-    );
+    SetMetadata(RESOLVER_DELEGATE_METADATA, propertyName)(target, key, descriptor);
     FieldResolver && FieldResolver(typeFunc, options)(target, key, descriptor);
   };
 }
@@ -118,9 +95,5 @@ export const getClassOrUndefined = (typeOrFunc: Function | Type<any>) => {
 };
 
 function isConstructor(obj: any) {
-  return (
-    !!obj.prototype &&
-    !!obj.prototype.constructor &&
-    !!obj.prototype.constructor.name
-  );
+  return !!obj.prototype && !!obj.prototype.constructor && !!obj.prototype.constructor.name;
 }
