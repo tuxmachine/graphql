@@ -18,4 +18,3 @@ test-schema.graphql
 *.test-definitions.ts
 
 # dist
-/dist
