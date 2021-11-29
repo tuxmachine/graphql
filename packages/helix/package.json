@@ -1,0 +1,45 @@
+{
+  "name": "@nestjs/helix",
+  "version": "9.1.1",
+  "description": "Nest - modern, fast, powerful node.js web framework (@graphql)",
+  "author": "Kamil Mysliwiec",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nestjs/graphql.git"
+  },
+  "scripts": {
+    "test:e2e": "jest --config ./tests/jest-e2e.ts --runInBand",
+    "test:e2e:dev": "jest --config ./tests/jest-e2e.ts --runInBand --watch"
+  },
+  "bugs": {
+    "url": "https://github.com/nestjs/graphql/issues"
+  },
+  "devDependencies": {
+    "@envelop/core": "^1.6.2",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/platform-express": "^8.1.1",
+    "@nestjs/platform-fastify": "^8.1.1",
+    "@nestjs/testing": "^8.1.1",
+    "fastify": "^3.24.0",
+    "graphql-helix": "^1.10.3"
+  },
+  "dependencies": {
+    "@graphql-tools/utils": "8.5.3"
+  },
+  "peerDependencies": {
+    "@envelop/core": "^1.6.2",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/graphql": "^9.0.0",
+    "fastify": "^3.24.0",
+    "graphql-helix": "^1.10.3"
+  }
+}

@@ -560,10 +560,22 @@
     ts-node "^9"
     tslib "^2"
 
+"@envelop/core@^1.6.2":
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/@envelop/core/-/core-1.6.2.tgz#03e80b01cd0faaca0e1d0a406a14d6693c6dbd84"
+  integrity sha512-otrNSlMgR0e8xG2tHI5Lcsg4YWKdUngRBn/dhxzTK2KFOOQa4mEfQI5k3/hESFlC8WFbP2pvNmegPjxa7aK4eA==
+  dependencies:
+    "@envelop/types" "1.5.1"
+
+"@envelop/types@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@envelop/types/-/types-1.5.1.tgz#8a47ca9f6e78b40b176dac0dea6c5045f92c644d"
+  integrity sha512-NrwLVzyNqiSzgRRqOxkU2IgRc5hSGS73VsgxqchU3jl36rYo7AXVAnITkytmB9wk+jN2vUOVvayLkaTXooARwg==
+
 "@eslint/eslintrc@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.0.3.tgz#41f08c597025605f672251dcc4e8be66b5ed7366"
-  integrity sha512-DHI1wDPoKCBPoLZA3qDR91+3te/wDSc1YhKg3jR8NxKKRJq2hwHwcWv31cSwSYvIBrmbENoYMWcenW8uproQqg==
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-1.0.4.tgz#dfe0ff7ba270848d10c5add0715e04964c034b31"
+  integrity sha512-h8Vx6MdxwWI2WM8/zREHMoqdgLNXEL4QX3MWSVMdyNJGvXVOs+6lp+m2hc3FnuMHDc4poxFNI20vCk0OmI4G0Q==
   dependencies:
     ajv "^6.12.4"
     debug "^4.3.2"
@@ -571,7 +583,7 @@
     globals "^13.9.0"
     ignore "^4.0.6"
     import-fresh "^3.2.1"
-    js-yaml "^3.13.1"
+    js-yaml "^4.1.0"
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
@@ -587,7 +599,7 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.2.tgz#30aa825f11d438671d585bd44e7fd564535fc210"
   integrity sha512-82cpyJyKRoQoRi+14ibCeGPu0CwypgtBAdBhq1WfvagpCZNKqwXbKwXllYSMG91DhmG4jt9gN8eP6lGOtozuaw==
 
-"@graphql-tools/merge@^8.2.1":
+"@graphql-tools/merge@8.2.1", "@graphql-tools/merge@^8.2.1":
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/@graphql-tools/merge/-/merge-8.2.1.tgz#bf83aa06a0cfc6a839e52a58057a84498d0d51ff"
   integrity sha512-Q240kcUszhXiAYudjuJgNuLgy9CryDP3wp83NOZQezfA6h3ByYKU7xI6DiKrdjyVaGpYN3ppUmdj0uf5GaXzMA==
@@ -1580,6 +1592,17 @@
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-8.1.1.tgz#33545402def3dd45219dcb9165db456bf8f239b2"
   integrity sha512-AIZIYjlctGKdWW1f1TDMJSJiDjUtR06b40nwUkfk22d/ZR0XM4OFtxMjrKC+HyR14ctaKUVU4pmzqFcQxymwXQ==
+  dependencies:
+    body-parser "1.19.0"
+    cors "2.8.5"
+    express "4.17.1"
+    multer "1.4.3"
+    tslib "2.3.1"
+
+"@nestjs/platform-express@^8.1.1":
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-8.2.3.tgz#8254c112658395f1e1f26e27a96538159e29f0d9"
+  integrity sha512-x8pyUpoKU8KUMYYwGiG17UXu818RUa6YCPu5Jvyq9P6G37ZfOAERYu3yveg9G5Q6YL6Z7jXAW9ojy+lWQXXhng==
   dependencies:
     body-parser "1.19.0"
     cors "2.8.5"
@@ -5207,6 +5230,11 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2, graceful-fs@^4.1.6
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
+
+graphql-helix@^1.10.3:
+  version "1.10.3"
+  resolved "https://registry.yarnpkg.com/graphql-helix/-/graphql-helix-1.10.3.tgz#b9fd383fd1b56ec28b9364d871f0aed5a02d2717"
+  integrity sha512-DBWId8YgIGJQX8isjDoXsEB7qokXtkKRRKvz/f20yvrqnqemw4TQzFTEbtNthFJR8Su6LQmknUUV3eRuPJULTQ==
 
 graphql-jit@^0.6.0:
   version "0.6.0"
